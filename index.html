@@ -2612,7 +2612,7 @@ document.addEventListener("click", function(e){
   const code = (el.getAttribute("onclick") || "").trim()
   if (!/^(open|home)[A-Za-z0-9_$]*\(/.test(code)) return
   if (/\bthis\b/.test(code)) return
-  if (/^home\(/.test(code)) { _navStack = []; _navCurrent = null; return }
+  if (/^home\(/.test(code)) return   // ホームの後始末は home() の中で行う
   if (_navCurrent && _navCurrent !== code) _navStack.push(_navCurrent)
   if (_navStack.length > 25) _navStack.shift()
   _navCurrent = code
@@ -9036,6 +9036,12 @@ function renderNoticeBanner() {
 }
 
 function home(scrollTo) {
+  // ホームに来たら履歴を空にする
+  // （以前はホームボタンを押したときしか消えず、goBack() や
+  //   保存後に home() が呼ばれた場合に古い記録が残っていた）
+  _navStack = []
+  _navCurrent = null
+
   hideHelpFab()
   let items = ""
   const nu = noticeUnreadCount()

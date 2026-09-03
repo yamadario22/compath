@@ -12420,7 +12420,7 @@ function openParentStudy() {
   `)
 
   loadChartJs().then((chartReady) => {
-    if (!chartReady) { showChartFallback(); return }
+    if (!chartReady) { ["parentStudyChart","parentDayChart","parentSubjChart"].forEach(showChartFallback); return }
     // 月別グラフ
     const ctx1 = document.getElementById("parentStudyChart")?.getContext("2d")
     if (ctx1 && months.length) {
@@ -12606,7 +12606,7 @@ function openParentScore() {
       tension:0.3, fill:false
     }))
     loadChartJs().then((chartReady) => {
-    if (!chartReady) { showChartFallback(); return }
+    if (!chartReady) { showChartFallback("parentScoreChart"); return }
       const ctx = document.getElementById("parentScoreChart")?.getContext("2d")
       if (!ctx) return
       new Chart(ctx, {type:"line", data:{labels, datasets},
